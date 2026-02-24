@@ -30,9 +30,12 @@ export function convertCustomerDataToIntelligenceFormat(
       name: customerData.name,
       region: customerData.region,
       endUserSegment: customerData.endUserSegment,
-      type: customerData.endUserSegment === 'Residential' ? 'residential'
-            : customerData.endUserSegment === 'Commercial and Industrial' ? 'commercial'
-            : 'utility'
+      type: customerData.endUserSegment === 'Mining & Mineral Processing' ? 'mining'
+            : customerData.endUserSegment === 'Water & Wastewater Treatment' ? 'water_treatment'
+            : customerData.endUserSegment === 'Chemicals & Process Industries' ? 'chemicals'
+            : customerData.endUserSegment === 'Energy & Utilities' ? 'energy'
+            : customerData.endUserSegment === 'Fertilizers / Phosphate Value Chain' ? 'fertilizers'
+            : 'manufacturing'
     }
     
     grouped.get(key)!.push(customer)

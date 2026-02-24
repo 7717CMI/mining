@@ -31,7 +31,7 @@ export default function DashboardPage() {
   const { setData, setLoading, setError, data, isLoading, error, filters, selectedChartGroup, dashboardName } = useDashboardStore()
   const [mounted, setMounted] = useState(false)
   const [hasCheckedStore, setHasCheckedStore] = useState(false)
-  const [activeTab, setActiveTab] = useState<'bar' | 'line' | 'heatmap' | 'table' | 'waterfall' | 'bubble' | 'competitive-intelligence' | 'customer-intelligence' | 'customer-intelligence-database'>('bar')
+  const [activeTab, setActiveTab] = useState<'bar' | 'line' | 'heatmap' | 'table' | 'waterfall' | 'bubble' | 'competitive-intelligence' | 'customer-intelligence' | 'customer-intelligence-database' | 'distributor-table'>('bar')
   const [showInsights, setShowInsights] = useState(false)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [viewMode, setViewMode] = useState<'tabs' | 'vertical'>('tabs')
@@ -55,7 +55,8 @@ export default function DashboardPage() {
     'bubble': 'bubble',
     'competitive-intelligence': 'competitive-intelligence',
     'customer-intelligence': 'customer-intelligence',
-    'customer-intelligence-database': 'customer-intelligence-database'
+    'customer-intelligence-database': 'customer-intelligence-database',
+    'distributor-table': 'distributor-table'
   }
 
   // Auto-switch to first available tab when chart group changes
@@ -204,7 +205,7 @@ export default function DashboardPage() {
                 Coherent Dashboard
               </h1>
               <h2 className="text-sm text-black">
-                {dashboardName || 'Global Solar Micro Inverter Market'}
+                {dashboardName || ' Morocco West Africa Mining and Industrial Chemical Market'}
               </h2>
             </div>
           </div>
@@ -395,7 +396,19 @@ export default function DashboardPage() {
                                 : 'border-transparent text-black hover:text-black hover:border-gray-300'
                             }`}
                           >
-                            👤 Customer Intelligence
+                            Customer Intelligence
+                          </button>
+                        )}
+                        {isChartVisible('distributor-table') && (
+                          <button
+                            onClick={() => setActiveTab('distributor-table')}
+                            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${
+                              activeTab === 'distributor-table'
+                                ? 'border-blue-500 text-blue-600'
+                                : 'border-transparent text-black hover:text-black hover:border-gray-300'
+                            }`}
+                          >
+                            Distributor Intelligence
                           </button>
                         )}
                       </>
@@ -513,6 +526,15 @@ export default function DashboardPage() {
                         />
                       </div>
                     )}
+
+                    {activeTab === 'distributor-table' && (
+                      <div id="distributor-intelligence-table">
+                        <DistributorsIntelligence
+                          title="Distributor Intelligence Database"
+                          height={600}
+                        />
+                      </div>
+                    )}
                   </>
                 ) : (
                   <div className="space-y-8">
@@ -605,9 +627,19 @@ export default function DashboardPage() {
 
                     {isChartVisible('customer-intelligence-database') && (
                       <div className="border-b pb-8">
-                        <h3 className="text-lg font-semibold text-black mb-4">👤 Customer Intelligence Database</h3>
+                        <h3 className="text-lg font-semibold text-black mb-4">Customer Intelligence Database</h3>
                         <CustomerIntelligenceDatabase
                           title="Customer Intelligence Database"
+                          height={600}
+                        />
+                      </div>
+                    )}
+
+                    {isChartVisible('distributor-table') && (
+                      <div className="border-b pb-8">
+                        <h3 className="text-lg font-semibold text-black mb-4">Distributor Intelligence Database</h3>
+                        <DistributorsIntelligence
+                          title="Distributor Intelligence Database"
                           height={600}
                         />
                       </div>

@@ -379,17 +379,17 @@ export function IntelligenceDataInput({
   }
 
   const regions = [
-    'North America',
-    'Latin America',
-    'Europe',
-    'Asia Pacific',
-    'Middle East & Africa'
+    'Morocco',
+    'West Africa'
   ]
 
   const endUserSegments = [
-    'Residential',
-    'Commercial and Industrial',
-    'Utility-scale'
+    'Mining & Mineral Processing',
+    'Water & Wastewater Treatment',
+    'Chemicals & Process Industries',
+    'Energy & Utilities',
+    'Fertilizers / Phosphate Value Chain',
+    'General Manufacturing (multi-industry)'
   ]
 
   const distributorSegments = [

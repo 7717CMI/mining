@@ -195,8 +195,8 @@ export function DistributorsIntelligenceHeatmap({ title, height = 600 }: Distrib
     }
 
     // Default regions and segments if no data
-    const defaultRegions = ['North America', 'Europe', 'Asia Pacific', 'Latin America', 'Middle East & Africa']
-    const defaultSegments = ['Direct Sales through OEM', 'Distributors and Wholesalers', 'Retailers', 'Solar Installers and Contractors']
+    const defaultRegions = ['Morocco', 'West Africa']
+    const defaultSegments = ['Direct End-Users', 'EPC / O&M Contractors', 'Government / Tender Buyers']
 
     return {
       regions: Array.from(regionSet).length > 0 ? Array.from(regionSet) : defaultRegions,

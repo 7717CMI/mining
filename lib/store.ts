@@ -74,7 +74,7 @@ function getDefaultFilters(data: ComparisonData | null): FilterState {
     geographies: [],
     segments: [],
     segmentType: '',
-    yearRange: [2019, 2031],
+    yearRange: [2021, 2033],
     dataType: 'value',
     viewMode: 'segment-mode',
     businessType: undefined,
@@ -122,7 +122,7 @@ function getDefaultOpportunityFilters(data: ComparisonData | null): FilterState 
       geographies: [],
       segments: [],
       segmentType: '',
-      yearRange: [2025, 2031], // Focus on forecast period for CAGR analysis
+      yearRange: [2026, 2033], // Focus on forecast period for CAGR analysis
       dataType: 'value',
       viewMode: 'segment-mode',
       businessType: undefined,
@@ -153,7 +153,7 @@ function getDefaultOpportunityFilters(data: ComparisonData | null): FilterState 
     geographies: firstGeography ? [firstGeography] : [],
     segments: segments, // Empty = show all segments (don't pre-filter)
     segmentType: firstSegmentType,
-    yearRange: [baseYear, forecastYear], // Full forecast range for CAGR calculation
+    yearRange: [baseYear + 1, forecastYear], // Forecast period for CAGR calculation (2026-2033)
     dataType: 'value',
     viewMode: 'segment-mode',
     businessType: defaultBusinessType,
@@ -459,7 +459,7 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         ...(newFilters.geographies !== undefined && { geographies: newFilters.geographies || [] }),
         ...(newFilters.segments !== undefined && { segments: newFilters.segments || [] }),
         ...(newFilters.segmentType !== undefined && { segmentType: newFilters.segmentType || '' }),
-        ...(newFilters.yearRange !== undefined && { yearRange: newFilters.yearRange || [2019, 2031] }),
+        ...(newFilters.yearRange !== undefined && { yearRange: newFilters.yearRange || [2021, 2033] }),
         ...(newFilters.dataType !== undefined && { dataType: newFilters.dataType || 'value' }),
         ...(newFilters.viewMode !== undefined && { viewMode: newFilters.viewMode || 'segment-mode' }),
         ...(newFilters.businessType !== undefined && { businessType: newFilters.businessType }),

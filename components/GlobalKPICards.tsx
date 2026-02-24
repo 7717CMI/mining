@@ -100,8 +100,9 @@ export function GlobalKPICards() {
       return null
     }
 
-    // Use actual years from data metadata
-    const startYear = data.metadata.base_year || data.metadata.start_year
+    // Use forecast period for CAGR calculation (2026-2033)
+    const forecastYears = data.metadata.forecast_years || []
+    const startYear = forecastYears.length > 0 ? forecastYears[0] : (data.metadata.base_year ? data.metadata.base_year + 1 : data.metadata.start_year)
     const endYear = data.metadata.forecast_year
 
     // Calculate total market size for start and end years

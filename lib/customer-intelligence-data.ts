@@ -8,7 +8,7 @@ export interface Customer {
   name: string
   region: string
   endUserSegment: string
-  type: 'residential' | 'commercial' | 'utility'
+  type: 'mining' | 'water_treatment' | 'chemicals' | 'energy' | 'fertilizers' | 'manufacturing'
 }
 
 export interface CustomerIntelligenceData {
@@ -19,22 +19,35 @@ export interface CustomerIntelligenceData {
 }
 
 // Realistic customer name generators by type
-const residentialNames = [
-  'Solar Home', 'Rooftop Solar', 'Green Energy Home', 'SunPower Residential',
-  'HomeGrid Solar', 'Bright Home Energy', 'SolarEdge Home', 'EcoHome Solar',
-  'Smart Home Solar', 'Residential Power'
+const miningNames = [
+  'Gold Fields Mining', 'AngloGold Ashanti', 'Newmont Mining', 'Barrick Gold',
+  'Tarkwa Mine Operations', 'Obuasi Gold Mine', 'Kinross Mining', 'Randgold Resources',
+  'Ahafo Mine Complex', 'Bibiani Gold Mine'
 ]
 
-const commercialNames = [
-  'Industrial Solar Park', 'Commercial Solar Solutions', 'Business Energy Center',
-  'Solar Power Plant', 'Corporate Solar Hub', 'Enterprise Energy', 'Solar Campus',
-  'Factory Solar System'
+const waterTreatmentNames = [
+  'Municipal Water Authority', 'AquaPure Treatment', 'WaterGen Solutions', 'HydroTreat Systems',
+  'CleanWater Utilities', 'PureFlow Treatment', 'Regional Water Corp', 'AquaSafe Operations'
 ]
 
-const utilityNames = [
-  'Grid-Scale Solar Farm', 'Utility Solar Station', 'Power Grid Solar',
-  'Megawatt Solar Park', 'Regional Solar Utility', 'Solar Generation Station',
-  'Grid Solar Complex', 'Utility Power Station'
+const chemicalsNames = [
+  'ChemProcess Industries', 'PetroChemical Corp', 'Industrial Chemicals Ltd', 'ProcessChem Solutions',
+  'Chemical Manufacturing Group', 'Specialty Chemicals Inc', 'Bulk Chemicals Corp', 'ChemWorks Processing'
+]
+
+const energyNames = [
+  'PowerGen Utilities', 'Regional Energy Corp', 'Thermal Power Station', 'Energy Solutions Group',
+  'National Power Authority', 'Grid Energy Systems', 'Power Plant Operations', 'Utility Energy Corp'
+]
+
+const fertilizerNames = [
+  'Phosphate Mining Corp', 'FertilizerWorks Ltd', 'AgroChemical Industries', 'Phosphate Valley Mining',
+  'NutrientChem Corp', 'Fertilizer Processing Group', 'PhosAgro Operations', 'AgroMineral Industries'
+]
+
+const manufacturingNames = [
+  'General Manufacturing Corp', 'Industrial Works Ltd', 'Multi-Industry Group', 'Factory Operations Inc',
+  'Manufacturing Solutions', 'Industrial Processing Corp', 'Plant Operations Group', 'Production Systems Ltd'
 ]
 
 const locationSuffixes = [
@@ -44,11 +57,8 @@ const locationSuffixes = [
 
 // Region-specific prefixes
 const regionPrefixes: Record<string, string[]> = {
-  'North America': ['American', 'United', 'National', 'Regional', 'Metropolitan'],
-  'Latin America': ['Latino', 'Americas', 'Continental', 'Regional', 'National'],
-  'Europe': ['European', 'Continental', 'Regional', 'National', 'Metropolitan'],
-  'Asia Pacific': ['Asia', 'Pacific', 'Regional', 'National', 'Metropolitan'],
-  'Middle East & Africa': ['Middle East', 'Regional', 'National', 'Gulf', 'African']
+  'Morocco': ['Moroccan', 'Royal', 'National', 'Casablanca', 'Marrakech'],
+  'West Africa': ['West African', 'Regional', 'National', 'Continental', 'Coastal']
 }
 
 function generateCustomerName(region: string, endUserSegment: string, index: number): string {
@@ -57,12 +67,18 @@ function generateCustomerName(region: string, endUserSegment: string, index: num
   const location = locationSuffixes[index % locationSuffixes.length]
 
   let baseName = ''
-  if (endUserSegment === 'Residential') {
-    baseName = residentialNames[index % residentialNames.length]
-  } else if (endUserSegment === 'Commercial and Industrial') {
-    baseName = commercialNames[index % commercialNames.length]
+  if (endUserSegment === 'Mining & Mineral Processing') {
+    baseName = miningNames[index % miningNames.length]
+  } else if (endUserSegment === 'Water & Wastewater Treatment') {
+    baseName = waterTreatmentNames[index % waterTreatmentNames.length]
+  } else if (endUserSegment === 'Chemicals & Process Industries') {
+    baseName = chemicalsNames[index % chemicalsNames.length]
+  } else if (endUserSegment === 'Energy & Utilities') {
+    baseName = energyNames[index % energyNames.length]
+  } else if (endUserSegment === 'Fertilizers / Phosphate Value Chain') {
+    baseName = fertilizerNames[index % fertilizerNames.length]
   } else {
-    baseName = utilityNames[index % utilityNames.length]
+    baseName = manufacturingNames[index % manufacturingNames.length]
   }
 
   return `${prefix} ${baseName} ${location}`
@@ -70,8 +86,7 @@ function generateCustomerName(region: string, endUserSegment: string, index: num
 
 /**
  * Generate realistic customer counts based on region and end user segment
- * Residential typically has more installations in developed regions
- * Utility-scale is more concentrated in large markets
+ * Mining is dominant in Africa, Water Treatment is widespread
  */
 // Deterministic seed function for consistent data generation
 function seededRandom(seed: number): () => number {
@@ -85,18 +100,18 @@ function seededRandom(seed: number): () => number {
 function generateCustomerCount(region: string, endUserSegment: string): number {
   // Base multipliers by region (reflecting market size)
   const regionMultipliers: Record<string, number> = {
-    'North America': 1.2,
-    'Europe': 1.0,
-    'Asia Pacific': 1.3,
-    'Latin America': 0.7,
-    'Middle East & Africa': 0.6
+    'Morocco': 1.0,
+    'West Africa': 1.3
   }
 
   // Base multipliers by end user type
   const segmentMultipliers: Record<string, number> = {
-    'Residential': 1.5,              // Most common
-    'Commercial and Industrial': 1.0, // Medium
-    'Utility-scale': 0.4              // Fewer but larger projects
+    'Mining & Mineral Processing': 1.5,
+    'Water & Wastewater Treatment': 1.3,
+    'Chemicals & Process Industries': 1.0,
+    'Energy & Utilities': 0.8,
+    'Fertilizers / Phosphate Value Chain': 0.6,
+    'General Manufacturing (multi-industry)': 0.7
   }
 
   // Base count range
@@ -125,17 +140,17 @@ function generateCustomerCount(region: string, endUserSegment: string): number {
  */
 export function generateCustomerIntelligenceData(): CustomerIntelligenceData[] {
   const regions = [
-    'North America',
-    'Latin America',
-    'Europe',
-    'Asia Pacific',
-    'Middle East & Africa'
+    'Morocco',
+    'West Africa'
   ]
 
   const endUserSegments = [
-    'Residential',
-    'Commercial and Industrial',
-    'Utility-scale'
+    'Mining & Mineral Processing',
+    'Water & Wastewater Treatment',
+    'Chemicals & Process Industries',
+    'Energy & Utilities',
+    'Fertilizers / Phosphate Value Chain',
+    'General Manufacturing (multi-industry)'
   ]
 
   const data: CustomerIntelligenceData[] = []
@@ -152,9 +167,12 @@ export function generateCustomerIntelligenceData(): CustomerIntelligenceData[] {
           name: generateCustomerName(region, endUserSegment, i),
           region,
           endUserSegment,
-          type: endUserSegment === 'Residential' ? 'residential'
-                : endUserSegment === 'Commercial and Industrial' ? 'commercial'
-                : 'utility'
+          type: endUserSegment === 'Mining & Mineral Processing' ? 'mining'
+                : endUserSegment === 'Water & Wastewater Treatment' ? 'water_treatment'
+                : endUserSegment === 'Chemicals & Process Industries' ? 'chemicals'
+                : endUserSegment === 'Energy & Utilities' ? 'energy'
+                : endUserSegment === 'Fertilizers / Phosphate Value Chain' ? 'fertilizers'
+                : 'manufacturing'
         })
       }
 
@@ -317,16 +335,10 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
     let normalizedRegion = region || null
     if (region) {
       const lowerRegion = region.toLowerCase()
-      if (lowerRegion.includes('north america') || lowerRegion.includes('usa') || lowerRegion.includes('united states') || lowerRegion.includes('u.s.')) {
-        normalizedRegion = 'North America'
-      } else if (lowerRegion.includes('latin america') || lowerRegion.includes('south america')) {
-        normalizedRegion = 'Latin America'
-      } else if (lowerRegion.includes('europe')) {
-        normalizedRegion = 'Europe'
-      } else if (lowerRegion.includes('asia') || lowerRegion.includes('pacific')) {
-        normalizedRegion = 'Asia Pacific'
-      } else if (lowerRegion.includes('middle east') || lowerRegion.includes('africa')) {
-        normalizedRegion = 'Middle East & Africa'
+      if (lowerRegion.includes('morocco') || lowerRegion.includes('maroc')) {
+        normalizedRegion = 'Morocco'
+      } else if (lowerRegion.includes('west africa') || lowerRegion.includes('guinea') || lowerRegion.includes('ghana') || lowerRegion.includes('nigeria') || lowerRegion.includes('senegal') || lowerRegion.includes('benin') || lowerRegion.includes('ivory coast') || lowerRegion.includes('côte d\'ivoire') || lowerRegion.includes('mauritania') || lowerRegion.includes('niger') || lowerRegion.includes('togo') || lowerRegion.includes('burkina faso')) {
+        normalizedRegion = 'West Africa'
       } else {
         normalizedRegion = region
       }
@@ -337,20 +349,11 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
       for (const key in row) {
         if (key.startsWith('_')) continue
         const value = String(row[key] || '').toLowerCase()
-        if (value.includes('north america') || value.includes('usa') || value.includes('united states')) {
-          normalizedRegion = 'North America'
+        if (value.includes('morocco') || value.includes('maroc')) {
+          normalizedRegion = 'Morocco'
           break
-        } else if (value.includes('latin america') || value.includes('south america')) {
-          normalizedRegion = 'Latin America'
-          break
-        } else if (value.includes('europe')) {
-          normalizedRegion = 'Europe'
-          break
-        } else if (value.includes('asia') || value.includes('pacific')) {
-          normalizedRegion = 'Asia Pacific'
-          break
-        } else if (value.includes('middle east') || value.includes('africa')) {
-          normalizedRegion = 'Middle East & Africa'
+        } else if (value.includes('west africa') || value.includes('guinea') || value.includes('ghana') || value.includes('nigeria') || value.includes('senegal')) {
+          normalizedRegion = 'West Africa'
           break
         }
       }
@@ -363,12 +366,18 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
     let normalizedSegment = endUserSegment || null
     if (endUserSegment) {
       const lowerSegment = endUserSegment.toLowerCase()
-      if (lowerSegment.includes('residential') || lowerSegment.includes('home')) {
-        normalizedSegment = 'Residential'
-      } else if (lowerSegment.includes('commercial') || lowerSegment.includes('industrial')) {
-        normalizedSegment = 'Commercial and Industrial'
-      } else if (lowerSegment.includes('utility') || lowerSegment.includes('grid')) {
-        normalizedSegment = 'Utility-scale'
+      if (lowerSegment.includes('mining') || lowerSegment.includes('mineral')) {
+        normalizedSegment = 'Mining & Mineral Processing'
+      } else if (lowerSegment.includes('water') || lowerSegment.includes('wastewater')) {
+        normalizedSegment = 'Water & Wastewater Treatment'
+      } else if (lowerSegment.includes('chemical') || lowerSegment.includes('process industr')) {
+        normalizedSegment = 'Chemicals & Process Industries'
+      } else if (lowerSegment.includes('energy') || lowerSegment.includes('utilit')) {
+        normalizedSegment = 'Energy & Utilities'
+      } else if (lowerSegment.includes('fertiliz') || lowerSegment.includes('phosphate')) {
+        normalizedSegment = 'Fertilizers / Phosphate Value Chain'
+      } else if (lowerSegment.includes('manufactur')) {
+        normalizedSegment = 'General Manufacturing (multi-industry)'
       } else {
         normalizedSegment = endUserSegment
       }
@@ -379,14 +388,23 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
       for (const key in row) {
         if (key.startsWith('_')) continue
         const value = String(row[key] || '').toLowerCase()
-        if (value.includes('residential') || value.includes('home')) {
-          normalizedSegment = 'Residential'
+        if (value.includes('mining') || value.includes('mineral')) {
+          normalizedSegment = 'Mining & Mineral Processing'
           break
-        } else if (value.includes('commercial') || value.includes('industrial')) {
-          normalizedSegment = 'Commercial and Industrial'
+        } else if (value.includes('water') || value.includes('wastewater')) {
+          normalizedSegment = 'Water & Wastewater Treatment'
           break
-        } else if (value.includes('utility') || value.includes('grid')) {
-          normalizedSegment = 'Utility-scale'
+        } else if (value.includes('chemical') || value.includes('process industr')) {
+          normalizedSegment = 'Chemicals & Process Industries'
+          break
+        } else if (value.includes('energy') || value.includes('utilit')) {
+          normalizedSegment = 'Energy & Utilities'
+          break
+        } else if (value.includes('fertiliz') || value.includes('phosphate')) {
+          normalizedSegment = 'Fertilizers / Phosphate Value Chain'
+          break
+        } else if (value.includes('manufactur')) {
+          normalizedSegment = 'General Manufacturing (multi-industry)'
           break
         }
       }
@@ -401,9 +419,12 @@ export function parseCustomerIntelligenceFromData(rows: Record<string, any>[]): 
       name: customerName,
       region: normalizedRegion,
       endUserSegment: normalizedSegment,
-      type: normalizedSegment === 'Residential' ? 'residential'
-            : normalizedSegment === 'Commercial and Industrial' ? 'commercial'
-            : 'utility'
+      type: normalizedSegment === 'Mining & Mineral Processing' ? 'mining'
+            : normalizedSegment === 'Water & Wastewater Treatment' ? 'water_treatment'
+            : normalizedSegment === 'Chemicals & Process Industries' ? 'chemicals'
+            : normalizedSegment === 'Energy & Utilities' ? 'energy'
+            : normalizedSegment === 'Fertilizers / Phosphate Value Chain' ? 'fertilizers'
+            : 'manufacturing'
     }
 
     // Group by region and segment

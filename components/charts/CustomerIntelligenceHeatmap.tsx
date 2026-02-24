@@ -181,17 +181,17 @@ export function CustomerIntelligenceHeatmap({ title, height = 600, filePath }: C
   const { regions, endUserSegments } = useMemo(() => {
     // Default regions and segments if data is not available
     const defaultRegions = [
-      'North America',
-      'Latin America',
-      'Europe',
-      'Asia Pacific',
-      'Middle East & Africa'
+      'Morocco',
+      'West Africa'
     ]
     
     const defaultSegments = [
-      'Residential',
-      'Commercial and Industrial',
-      'Utility-scale'
+      'Mining & Mineral Processing',
+      'Water & Wastewater Treatment',
+      'Chemicals & Process Industries',
+      'Energy & Utilities',
+      'Fertilizers / Phosphate Value Chain',
+      'General Manufacturing (multi-industry)'
     ]
 
     // First, try to extract regions and segments from loaded customer data
@@ -213,7 +213,7 @@ export function CustomerIntelligenceHeatmap({ title, height = 600, filePath }: C
       const allRegions = data.dimensions.geographies.regions || defaultRegions
       
       // Get end user segments from dimensions
-      const endUserDimension = data.dimensions.segments['By End-User']
+      const endUserDimension = data.dimensions.segments['By End-Use Industry']
       const segments = endUserDimension?.items || []
 
       const allSegments = segments.length > 0 ? [...segments] : [...defaultSegments]

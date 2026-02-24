@@ -273,14 +273,14 @@ const portfolios: Record<string, string> = {
 
 // Regional strengths
 const regionalStrengths: Record<string, string> = {
-  'Gaudron Bedstar': 'North America, Europe',
-  'Kandeltam': 'Europe, Asia Pacific',
-  'Hebei Xing Chemical': 'China, Southeast Asia',
-  'Hubei Jingchan Chutkan': 'China, Latin America',
-  'Vishno Barium (V.C.)': 'India, Middle East',
-  'Jiaxinxi Anheng Jianghua': 'China, Africa',
-  'Nippon Chemical Industrial': 'Japan, North America',
-  'Sakai Chemical Industry': 'Japan, Europe',
+  'Gaudron Bedstar': 'Morocco, West Africa',
+  'Kandeltam': 'Morocco, West Africa',
+  'Hebei Xing Chemical': 'West Africa',
+  'Hubei Jingchan Chutkan': 'Morocco',
+  'Vishno Barium (V.C.)': 'West Africa',
+  'Jiaxinxi Anheng Jianghua': 'West Africa',
+  'Nippon Chemical Industrial': 'Morocco',
+  'Sakai Chemical Industry': 'Morocco, West Africa',
   'Others': 'Global'
 }
 
@@ -334,7 +334,7 @@ function generatePropositions(company: string): Proposition[] {
     ],
     'Hubei Jingchan Chutkan': [
       { title: 'Traditional Medicine Integration', description: 'Combining ancient Chinese medicine with modern oncology treatments', category: 'Cultural Approach' },
-      { title: 'Local Market Expertise', description: 'Deep understanding of Asian and Latin American healthcare systems', category: 'Market Knowledge' },
+      { title: 'Local Market Expertise', description: 'Deep understanding of West African and Moroccan mining chemical markets', category: 'Market Knowledge' },
       { title: 'R&D Investment', description: 'Annual R&D investment of $50M in traditional medicine research', category: 'Research & Development' }
     ],
     'Vishno Barium (V.C.)': [

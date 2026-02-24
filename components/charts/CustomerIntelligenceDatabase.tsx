@@ -1,553 +1,381 @@
 'use client'
 
 import { useState } from 'react'
-import { ChevronDown, ChevronUp } from 'lucide-react'
-
-interface CustomerData {
-  // Customer Information
-  sNo: number
-  customerPlantOrganizationName: string
-  parentGroupHoldingCompany: string
-  country: string
-  cityIndustrialCluster: string
-  endUseIndustry: string
-  facilityType: string
-  // Product/Door Information
-  primaryDoorType: string
-  automationLevel: string
-  material: string
-  installedIndustrialDoorBase: string
-  // Contact Details
-  keyContactPerson: string
-  designation: string
-  emailAddress: string
-  phoneNumber: string
-  linkedInProfile: string
-  websiteUrl: string
-  // Needs & Pain Points
-  primaryNeedFocus: string
-  keyProductNeeds: string
-  keyServiceNeeds: string
-  // Purchasing Behaviour (for Proposition 3)
-  decisionMakers: string
-  currentSupplierSetup: string
-  currentMaintenanceModel: string
-  // Opportunity & Project Status (for Proposition 3)
-  priorityLevel: string
-  expectedOpportunitySize: string
-  plannedProjects: string
-  // CMI Insights (for Proposition 3)
-  customerBenchmarkingSummary: string
-}
-
-// Sample data for Industrial Door Industry
-const sampleCustomerData: CustomerData[] = [
-  {
-    sNo: 1,
-    customerPlantOrganizationName: 'Tata Steel - Jamshedpur Plant',
-    parentGroupHoldingCompany: 'Tata Group',
-    country: 'India',
-    cityIndustrialCluster: 'Jamshedpur Industrial Zone',
-    endUseIndustry: 'Steel Manufacturing',
-    facilityType: 'Manufacturing Plant',
-    primaryDoorType: 'High-Speed Rolling Doors',
-    automationLevel: 'Fully Automated',
-    material: 'Steel with Insulated Panels',
-    installedIndustrialDoorBase: '45 doors / 12 bays / 4m x 5m',
-    keyContactPerson: 'Rajesh Kumar',
-    designation: 'Plant Manager - Facilities',
-    emailAddress: 'r.kumar@tatasteel.com',
-    phoneNumber: '+91 98765 43210',
-    linkedInProfile: 'linkedin.com/in/rajeshkumar-tata',
-    websiteUrl: 'www.tatasteel.com',
-    primaryNeedFocus: 'Products',
-    keyProductNeeds: 'High-speed doors, insulation, safety sensors',
-    keyServiceNeeds: 'Installation, AMC, emergency repair',
-    decisionMakers: 'Plant Manager, Maintenance Head, Procurement',
-    currentSupplierSetup: 'OEM / Multi-vendor',
-    currentMaintenanceModel: 'Mixed',
-    priorityLevel: 'High',
-    expectedOpportunitySize: 'Large (₹50L+)',
-    plannedProjects: 'Plant expansion, Safety compliance retrofit',
-    customerBenchmarkingSummary: 'High potential - Strategic account'
-  },
-  {
-    sNo: 2,
-    customerPlantOrganizationName: 'Amazon Fulfillment Center',
-    parentGroupHoldingCompany: 'Amazon Inc.',
-    country: 'India',
-    cityIndustrialCluster: 'Bhiwandi Logistics Hub',
-    endUseIndustry: 'E-commerce & Logistics',
-    facilityType: 'Warehouse / Distribution Center',
-    primaryDoorType: 'Dock Levelers & Sectional Doors',
-    automationLevel: 'Semi-Automated',
-    material: 'Insulated Steel Panels',
-    installedIndustrialDoorBase: '120 doors / 48 bays / 3m x 4m',
-    keyContactPerson: 'Priya Sharma',
-    designation: 'Operations Manager',
-    emailAddress: 'p.sharma@amazon.com',
-    phoneNumber: '+91 98234 56789',
-    linkedInProfile: 'linkedin.com/in/priyasharma-amazon',
-    websiteUrl: 'www.amazon.in',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'Dock doors, loading bay equipment, seals',
-    keyServiceNeeds: 'Installation, maintenance, AMC, rapid repair',
-    decisionMakers: 'Operations Manager, Facility Manager, Procurement',
-    currentSupplierSetup: 'Multi-vendor / EPC',
-    currentMaintenanceModel: 'Outsourced',
-    priorityLevel: 'High',
-    expectedOpportunitySize: 'Large (₹75L+)',
-    plannedProjects: 'New fulfillment center, Automation upgrade',
-    customerBenchmarkingSummary: 'High potential - Large fleet'
-  },
-  {
-    sNo: 3,
-    customerPlantOrganizationName: 'Nestle India - Nanjangud Factory',
-    parentGroupHoldingCompany: 'Nestle S.A.',
-    country: 'India',
-    cityIndustrialCluster: 'Nanjangud Food Processing Zone',
-    endUseIndustry: 'Food & Beverage',
-    facilityType: 'Food Processing Plant',
-    primaryDoorType: 'Hygienic High-Speed Doors',
-    automationLevel: 'Fully Automated',
-    material: 'Stainless Steel / PVC',
-    installedIndustrialDoorBase: '65 doors / 20 bays / 2.5m x 3m',
-    keyContactPerson: 'Amit Verma',
-    designation: 'Engineering Head',
-    emailAddress: 'a.verma@nestle.com',
-    phoneNumber: '+91 99887 65432',
-    linkedInProfile: 'linkedin.com/in/amitverma-nestle',
-    websiteUrl: 'www.nestle.in',
-    primaryNeedFocus: 'Products',
-    keyProductNeeds: 'Hygienic doors, clean room doors, air curtains',
-    keyServiceNeeds: 'Installation, scheduled maintenance, retrofit',
-    decisionMakers: 'Engineering Head, Quality Manager, Procurement',
-    currentSupplierSetup: 'OEM / Dealers',
-    currentMaintenanceModel: 'In-house',
-    priorityLevel: 'Medium',
-    expectedOpportunitySize: 'Medium (₹25-50L)',
-    plannedProjects: 'Compliance upgrade, Capacity expansion',
-    customerBenchmarkingSummary: 'High potential - Premium segment'
-  },
-  {
-    sNo: 4,
-    customerPlantOrganizationName: 'Maruti Suzuki - Manesar Plant',
-    parentGroupHoldingCompany: 'Suzuki Motor Corporation',
-    country: 'India',
-    cityIndustrialCluster: 'Manesar Automotive Hub',
-    endUseIndustry: 'Automotive Manufacturing',
-    facilityType: 'Assembly Plant',
-    primaryDoorType: 'High-Speed & Sectional Doors',
-    automationLevel: 'Fully Automated',
-    material: 'Galvanized Steel',
-    installedIndustrialDoorBase: '200 doors / 60 bays / Various sizes',
-    keyContactPerson: 'Suresh Nair',
-    designation: 'VP - Plant Engineering',
-    emailAddress: 's.nair@maruti.co.in',
-    phoneNumber: '+91 98102 34567',
-    linkedInProfile: 'linkedin.com/in/sureshnair-maruti',
-    websiteUrl: 'www.marutisuzuki.com',
-    primaryNeedFocus: 'Both',
-    keyProductNeeds: 'Paint booth doors, assembly line doors, safety doors',
-    keyServiceNeeds: 'AMC, emergency repair, retrofit, installation',
-    decisionMakers: 'VP Engineering, Maintenance Head, Central Procurement',
-    currentSupplierSetup: 'OEM / Multi-vendor',
-    currentMaintenanceModel: 'Mixed',
-    priorityLevel: 'High',
-    expectedOpportunitySize: 'Large (₹1Cr+)',
-    plannedProjects: 'New model line, Automation upgrade',
-    customerBenchmarkingSummary: 'High potential - Strategic'
-  },
-  {
-    sNo: 5,
-    customerPlantOrganizationName: 'DHL Supply Chain - Cold Storage',
-    parentGroupHoldingCompany: 'Deutsche Post DHL Group',
-    country: 'India',
-    cityIndustrialCluster: 'Pune Logistics Park',
-    endUseIndustry: 'Cold Chain Logistics',
-    facilityType: 'Cold Storage Facility',
-    primaryDoorType: 'Cold Room Doors & Air Curtains',
-    automationLevel: 'Semi-Automated',
-    material: 'Insulated Panels / PU Core',
-    installedIndustrialDoorBase: '35 doors / 15 bays / 2m x 3m',
-    keyContactPerson: 'Ankit Jain',
-    designation: 'Facility Manager',
-    emailAddress: 'a.jain@dhl.com',
-    phoneNumber: '+91 97654 32109',
-    linkedInProfile: 'linkedin.com/in/ankitjain-dhl',
-    websiteUrl: 'www.dhl.com',
-    primaryNeedFocus: 'Services',
-    keyProductNeeds: 'Cold room doors, strip curtains, seals',
-    keyServiceNeeds: 'Maintenance, emergency repair, AMC',
-    decisionMakers: 'Facility Manager, Operations Head, Procurement',
-    currentSupplierSetup: 'Dealers / EPC',
-    currentMaintenanceModel: 'Outsourced',
-    priorityLevel: 'Medium',
-    expectedOpportunitySize: 'Medium (₹20-40L)',
-    plannedProjects: 'Cold chain expansion, Retrofit',
-    customerBenchmarkingSummary: 'High potential - Growing segment'
-  }
-]
-
-interface PrepositionProps {
-  title: string
-  isOpen: boolean
-  onToggle: () => void
-  children: React.ReactNode
-}
-
-function Preposition({ title, isOpen, onToggle, children }: PrepositionProps) {
-  return (
-    <div className="border border-gray-200 rounded-lg mb-4">
-      <button
-        onClick={onToggle}
-        className="w-full flex items-center justify-between px-6 py-4 bg-white hover:bg-gray-50 rounded-lg transition-colors"
-      >
-        <span className="text-lg font-semibold text-black">{title}</span>
-        {isOpen ? (
-          <ChevronUp className="h-5 w-5 text-gray-500" />
-        ) : (
-          <ChevronDown className="h-5 w-5 text-gray-500" />
-        )}
-      </button>
-      {isOpen && (
-        <div className="px-2 pb-4 bg-white rounded-b-lg">
-          {children}
-        </div>
-      )}
-    </div>
-  )
-}
 
 interface CustomerIntelligenceDatabaseProps {
   title?: string
   height?: number
 }
 
-export default function CustomerIntelligenceDatabase({ title }: CustomerIntelligenceDatabaseProps) {
-  const [openPreposition, setOpenPreposition] = useState<number | null>(1)
+// Column definition
+interface Column {
+  key: string
+  label: string
+}
 
-  const togglePreposition = (num: number) => {
-    setOpenPreposition(openPreposition === num ? null : num)
-  }
+// Section definition
+interface Section {
+  name: string
+  bgColor: string
+  headerBg: string
+  columns: Column[]
+}
 
-  // Preposition 1 Table - Customer Information + Contact Details
-  const renderPreposition1Table = () => (
-    <div className="overflow-x-auto">
-      <table className="min-w-full border-collapse">
-        <thead>
-          <tr>
-            <th colSpan={7} className="bg-[#E8C4A0] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Customer Information
-            </th>
-            <th colSpan={6} className="bg-[#87CEEB] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Contact Details
-            </th>
-          </tr>
-          <tr className="bg-gray-100">
-            {/* Customer Information */}
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[60px]">
-              S.No.
-            </th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[180px]">
-              Customer / Plant / Organization Name
-            </th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">
-              Parent Group / Holding Company
-            </th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[100px]">
-              Country
-            </th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">
-              City / Industrial Cluster
-            </th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">
-              End-use Industry
-            </th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[130px]">
-              Facility Type
-            </th>
-            {/* Contact Details */}
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[130px]">Key Contact Person</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">Designation / Department</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">Email Address</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[140px]">Phone/ WhatsApp Number</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">LinkedIn Profile</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[130px]">Website URL</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sampleCustomerData.map((customer, index) => (
-            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-              {/* Customer Information */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black text-center">{customer.sNo}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.customerPlantOrganizationName}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.parentGroupHoldingCompany}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.country}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.cityIndustrialCluster}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.endUseIndustry}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.facilityType}</td>
-              {/* Contact Details */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.keyContactPerson}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.designation}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`mailto:${customer.emailAddress}`}>{customer.emailAddress}</a>
-              </td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.phoneNumber}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`https://${customer.linkedInProfile}`} target="_blank" rel="noopener noreferrer">{customer.linkedInProfile}</a>
-              </td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`https://${customer.websiteUrl}`} target="_blank" rel="noopener noreferrer">{customer.websiteUrl}</a>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+const SECTIONS: Section[] = [
+  {
+    name: 'Company Information',
+    bgColor: 'bg-green-100',
+    headerBg: 'bg-green-50',
+    columns: [
+      { key: 'company_name', label: 'Company Name' },
+      { key: 'year_established', label: 'Year Established' },
+      { key: 'headquarters', label: 'Headquarters' },
+      { key: 'no_of_employees', label: 'No. of Employees (est.) (if available)' },
+      { key: 'revenue_turnover', label: 'Revenue / Turnover (if available)' },
+    ],
+  },
+  {
+    name: 'Contact Details',
+    bgColor: 'bg-blue-100',
+    headerBg: 'bg-blue-50',
+    columns: [
+      { key: 'key_contact_person', label: 'Key Contact Person' },
+      { key: 'designation_role', label: 'Designation / Role' },
+      { key: 'email_address', label: 'Email Address (verified / generic)' },
+      { key: 'phone_whatsapp', label: 'Phone / WhatsApp Number' },
+      { key: 'linkedin_profile', label: 'LinkedIn Profile' },
+      { key: 'website_url', label: 'Website URL' },
+    ],
+  },
+  {
+    name: 'Product Required',
+    bgColor: 'bg-blue-100',
+    headerBg: 'bg-blue-50',
+    columns: [
+      { key: 'chemical_category_required', label: 'Chemical Category Required' },
+      { key: 'estimated_annual_consumption', label: 'Estimated Annual Consumption (Tons/Year)' },
+      { key: 'purchase_frequency', label: 'Purchase Frequency (Seasonal, Monthly, Quarterly)' },
+    ],
+  },
+  {
+    name: 'Customer Capacity & Operations',
+    bgColor: 'bg-yellow-100',
+    headerBg: 'bg-yellow-50',
+    columns: [
+      { key: 'sales_channel_type', label: 'Sales Channel Type (Distributors, Wholesaler, Trader)' },
+      { key: 'region_specific_operation', label: 'Region-specific Operation' },
+    ],
+  },
+  {
+    name: 'Customer Engagement Level',
+    bgColor: 'bg-green-100',
+    headerBg: 'bg-green-50',
+    columns: [
+      { key: 'engagement_with_suppliers', label: 'Engagement With Suppliers (Low, Medium, High)' },
+      { key: 'preferred_contact_method', label: 'Preferred Contact Method (Phone, E Mail, B2B, Others)' },
+      { key: 'response_speed', label: 'Response Speed (for procurement)' },
+    ],
+  },
+]
 
-  // Preposition 2 Table - Customer Information + Contact Details + Needs & Pain Points
-  const renderPreposition2Table = () => (
-    <div className="overflow-x-auto">
-      <table className="min-w-full border-collapse">
-        <thead>
-          <tr>
-            <th colSpan={7} className="bg-[#E8C4A0] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Customer Information
-            </th>
-            <th colSpan={6} className="bg-[#87CEEB] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Contact Details
-            </th>
-            <th colSpan={3} className="bg-[#87CEEB] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Needs & Pain Points
-            </th>
-          </tr>
-          <tr className="bg-gray-100">
-            {/* Customer Information */}
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[60px]">S.No.</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[180px]">Customer / Plant / Organization Name</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">Parent Group / Holding Company</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[100px]">Country</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">City / Industrial Cluster</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">End-use Industry</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[130px]">Facility Type</th>
-            {/* Contact Details */}
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[130px]">Key Contact Person</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">Designation / Department</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">Email Address</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[140px]">Phone/ WhatsApp Number</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">LinkedIn Profile</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[130px]">Website URL</th>
-            {/* Needs & Pain Points */}
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">
-              <div>Primary Need Focus</div>
-              <div className="font-normal text-[10px] text-gray-600">(Products / Services / Both)</div>
-            </th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[200px]">
-              <div>Key Product Needs</div>
-              <div className="font-normal text-[10px] text-gray-600">(doors, automation, safety, insulation, seals, etc.)</div>
-            </th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[220px]">
-              <div>Key Service Needs</div>
-              <div className="font-normal text-[10px] text-gray-600">(installation, maintenance, AMC, repair, retrofit, etc.)</div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {sampleCustomerData.map((customer, index) => (
-            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-              {/* Customer Information */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black text-center">{customer.sNo}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.customerPlantOrganizationName}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.parentGroupHoldingCompany}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.country}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.cityIndustrialCluster}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.endUseIndustry}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.facilityType}</td>
-              {/* Contact Details */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.keyContactPerson}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.designation}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`mailto:${customer.emailAddress}`}>{customer.emailAddress}</a>
-              </td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.phoneNumber}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`https://${customer.linkedInProfile}`} target="_blank" rel="noopener noreferrer">{customer.linkedInProfile}</a>
-              </td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`https://${customer.websiteUrl}`} target="_blank" rel="noopener noreferrer">{customer.websiteUrl}</a>
-              </td>
-              {/* Needs & Pain Points */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.primaryNeedFocus}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.keyProductNeeds}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.keyServiceNeeds}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+// Demo customer data for Morocco & West Africa Mining Chemical Market
+const DEMO_DATA: Record<string, string>[] = [
+  {
+    company_name: 'OCP Group S.A.',
+    year_established: '1920',
+    headquarters: 'Casablanca, Morocco',
+    no_of_employees: '21,000+',
+    revenue_turnover: '$9.4B (2023)',
+    key_contact_person: 'Karim Benchekroun',
+    designation_role: 'VP - Chemical Procurement',
+    email_address: 'k.benchekroun@ocpgroup.ma',
+    phone_whatsapp: '+212 522 232 025',
+    linkedin_profile: 'linkedin.com/in/karimbenchekroun',
+    website_url: 'www.ocpgroup.ma',
+    chemical_category_required: 'Flotation reagents, Sulfuric acid, Phosphoric acid',
+    estimated_annual_consumption: '150,000+',
+    purchase_frequency: 'Monthly',
+    sales_channel_type: 'Distributor & Direct',
+    region_specific_operation: 'Morocco (Khouribga, Jorf Lasfar, Benguerir)',
+    engagement_with_suppliers: 'High',
+    preferred_contact_method: 'E Mail, B2B Portal',
+    response_speed: 'Fast (1-3 days)',
+  },
+  {
+    company_name: 'Managem Group',
+    year_established: '1928',
+    headquarters: 'Casablanca, Morocco',
+    no_of_employees: '6,500',
+    revenue_turnover: '$850M (2023)',
+    key_contact_person: 'Nadia El Idrissi',
+    designation_role: 'Procurement Manager - Mining Chemicals',
+    email_address: 'n.elidrissi@managemgroup.com',
+    phone_whatsapp: '+212 522 924 624',
+    linkedin_profile: 'linkedin.com/in/nadiaelidrissi',
+    website_url: 'www.managemgroup.com',
+    chemical_category_required: 'Cyanide, Xanthates, Collectors, Grinding aids',
+    estimated_annual_consumption: '25,000',
+    purchase_frequency: 'Monthly',
+    sales_channel_type: 'Direct & Distributor',
+    region_specific_operation: 'Morocco (Draa-Tafilalet, Souss-Massa), Gabon, Sudan',
+    engagement_with_suppliers: 'High',
+    preferred_contact_method: 'E Mail, Phone',
+    response_speed: 'Fast (1-3 days)',
+  },
+  {
+    company_name: 'Newmont Ghana Gold Ltd.',
+    year_established: '2006',
+    headquarters: 'Accra, Ghana',
+    no_of_employees: '5,200',
+    revenue_turnover: '$2.1B (Ghana ops)',
+    key_contact_person: 'Daniel Appiah',
+    designation_role: 'Supply Chain Director',
+    email_address: 'd.appiah@newmont.com',
+    phone_whatsapp: '+233 302 743 252',
+    linkedin_profile: 'linkedin.com/in/danielappiah-newmont',
+    website_url: 'www.newmont.com',
+    chemical_category_required: 'Sodium cyanide, Activated carbon, Caustic soda, Lime',
+    estimated_annual_consumption: '35,000',
+    purchase_frequency: 'Monthly',
+    sales_channel_type: 'Direct',
+    region_specific_operation: 'Ghana (Ahafo, Akyem mines)',
+    engagement_with_suppliers: 'High',
+    preferred_contact_method: 'B2B, E Mail',
+    response_speed: 'Fast (1-2 days)',
+  },
+  {
+    company_name: 'Compagnie des Bauxites de Guinée (CBG)',
+    year_established: '1963',
+    headquarters: 'Conakry, Guinea',
+    no_of_employees: '3,000',
+    revenue_turnover: '$600M (est.)',
+    key_contact_person: 'Souleymane Barry',
+    designation_role: 'Head of Procurement',
+    email_address: 's.barry@cbg-guinee.com',
+    phone_whatsapp: '+224 622 456 789',
+    linkedin_profile: 'linkedin.com/in/souleymanebarry',
+    website_url: 'www.cbg-guinee.com',
+    chemical_category_required: 'Flocculants, Coagulants, Dust suppressants',
+    estimated_annual_consumption: '8,000',
+    purchase_frequency: 'Quarterly',
+    sales_channel_type: 'Distributor',
+    region_specific_operation: 'Guinea (Boké region)',
+    engagement_with_suppliers: 'Medium',
+    preferred_contact_method: 'Phone, E Mail',
+    response_speed: 'Moderate (3-7 days)',
+  },
+  {
+    company_name: 'SNIM (Société Nationale Industrielle et Minière)',
+    year_established: '1974',
+    headquarters: 'Nouadhibou, Mauritania',
+    no_of_employees: '6,800',
+    revenue_turnover: '$1.2B (est.)',
+    key_contact_person: 'Abdoulaye Ould Ahmed',
+    designation_role: 'Chemical Procurement Manager',
+    email_address: 'a.ahmed@snim.com',
+    phone_whatsapp: '+222 45 74 51 10',
+    linkedin_profile: 'linkedin.com/in/abdoulayeouldahmed',
+    website_url: 'www.snim.com',
+    chemical_category_required: 'Flotation chemicals, Flocculants, Water treatment chemicals',
+    estimated_annual_consumption: '12,000',
+    purchase_frequency: 'Monthly',
+    sales_channel_type: 'Direct & Distributor',
+    region_specific_operation: 'Mauritania (Zouerate, Fdérik iron ore mines)',
+    engagement_with_suppliers: 'High',
+    preferred_contact_method: 'E Mail, Phone',
+    response_speed: 'Fast (2-4 days)',
+  },
+  {
+    company_name: 'Endeavour Mining - Ity Gold Mine',
+    year_established: '2010',
+    headquarters: 'Abidjan, Ivory Coast',
+    no_of_employees: '1,800',
+    revenue_turnover: '$480M (Ity ops)',
+    key_contact_person: 'Marc Konan',
+    designation_role: 'Site Procurement Lead',
+    email_address: 'm.konan@endeavourmining.com',
+    phone_whatsapp: '+225 27 2045 6789',
+    linkedin_profile: 'linkedin.com/in/marckonan',
+    website_url: 'www.endeavourmining.com',
+    chemical_category_required: 'Cyanide, Activated carbon, Lime, Flocculants',
+    estimated_annual_consumption: '18,000',
+    purchase_frequency: 'Monthly',
+    sales_channel_type: 'Direct',
+    region_specific_operation: 'Ivory Coast (Ity CIL Mine, Birimian belt)',
+    engagement_with_suppliers: 'High',
+    preferred_contact_method: 'B2B, E Mail',
+    response_speed: 'Fast (1-3 days)',
+  },
+  {
+    company_name: 'IAMGOLD Essakane S.A.',
+    year_established: '2008',
+    headquarters: 'Ouagadougou, Burkina Faso',
+    no_of_employees: '2,500',
+    revenue_turnover: '$520M (est.)',
+    key_contact_person: 'Adama Sawadogo',
+    designation_role: 'Warehouse & Chemical Procurement',
+    email_address: 'a.sawadogo@iamgold.com',
+    phone_whatsapp: '+226 25 30 88 90',
+    linkedin_profile: 'linkedin.com/in/adamasawadogo',
+    website_url: 'www.iamgold.com',
+    chemical_category_required: 'Sodium cyanide, Carbon, Lime, pH regulators',
+    estimated_annual_consumption: '15,000',
+    purchase_frequency: 'Monthly',
+    sales_channel_type: 'Distributor',
+    region_specific_operation: 'Burkina Faso (Essakane mine, Sahel region)',
+    engagement_with_suppliers: 'Medium',
+    preferred_contact_method: 'Phone, E Mail',
+    response_speed: 'Moderate (3-5 days)',
+  },
+  {
+    company_name: 'Dangote Cement - Mining Division',
+    year_established: '1981',
+    headquarters: 'Lagos, Nigeria',
+    no_of_employees: '30,000+',
+    revenue_turnover: '$4.3B (group)',
+    key_contact_person: 'Olumide Adeyemi',
+    designation_role: 'Mining Operations Procurement Lead',
+    email_address: 'o.adeyemi@dangotecement.com',
+    phone_whatsapp: '+234 803 456 7890',
+    linkedin_profile: 'linkedin.com/in/olumideadeyemi',
+    website_url: 'www.dangotecement.com',
+    chemical_category_required: 'Grinding aids, Explosives chemicals, Dust control',
+    estimated_annual_consumption: '20,000',
+    purchase_frequency: 'Monthly',
+    sales_channel_type: 'Wholesaler & Direct',
+    region_specific_operation: 'Nigeria (Obajana, Ibese), Senegal, Ghana, Togo',
+    engagement_with_suppliers: 'High',
+    preferred_contact_method: 'B2B, E Mail',
+    response_speed: 'Fast (1-3 days)',
+  },
+  {
+    company_name: 'Société des Mines de Fer de Guinée (SMFG)',
+    year_established: '2003',
+    headquarters: 'Conakry, Guinea',
+    no_of_employees: '800',
+    revenue_turnover: '$120M (est.)',
+    key_contact_person: 'Thierno Diallo',
+    designation_role: 'Chemical & Reagent Buyer',
+    email_address: 't.diallo@smfg.com.gn',
+    phone_whatsapp: '+224 628 123 456',
+    linkedin_profile: 'linkedin.com/in/thiernodiallo',
+    website_url: 'www.smfg.com.gn',
+    chemical_category_required: 'Flocculants, Coagulants, Corrosion inhibitors',
+    estimated_annual_consumption: '4,000',
+    purchase_frequency: 'Quarterly',
+    sales_channel_type: 'Distributor',
+    region_specific_operation: 'Guinea (Nimba mountains, iron ore)',
+    engagement_with_suppliers: 'Low',
+    preferred_contact_method: 'Phone, E Mail',
+    response_speed: 'Slow (7-14 days)',
+  },
+  {
+    company_name: 'Grande Côte Operations (GCO) - Eramet',
+    year_established: '2014',
+    headquarters: 'Diogo, Senegal',
+    no_of_employees: '1,200',
+    revenue_turnover: '$350M (est.)',
+    key_contact_person: 'Ousmane Ndiaye',
+    designation_role: 'Plant Chemical Procurement',
+    email_address: 'o.ndiaye@eramet-gco.sn',
+    phone_whatsapp: '+221 33 859 7200',
+    linkedin_profile: 'linkedin.com/in/ousmanendiaye',
+    website_url: 'www.eramet.com',
+    chemical_category_required: 'Flotation collectors, Frothers, Water treatment',
+    estimated_annual_consumption: '6,500',
+    purchase_frequency: 'Quarterly',
+    sales_channel_type: 'Direct & Distributor',
+    region_specific_operation: 'Senegal (Grande Côte mineral sands)',
+    engagement_with_suppliers: 'Medium',
+    preferred_contact_method: 'E Mail, B2B',
+    response_speed: 'Moderate (3-5 days)',
+  },
+]
 
-  // Preposition 3 Table - Customer Information + Contact Details + Needs & Pain Points + Purchasing Behaviour + Opportunity & Project Status + CMI Insights
-  const renderPreposition3Table = () => (
-    <div className="overflow-x-auto">
-      <table className="min-w-full border-collapse">
-        <thead>
-          <tr>
-            <th colSpan={7} className="bg-[#E8C4A0] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Customer Information
-            </th>
-            <th colSpan={6} className="bg-[#87CEEB] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Contact Details
-            </th>
-            <th colSpan={3} className="bg-[#87CEEB] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Needs & Pain Points
-            </th>
-            <th colSpan={3} className="bg-[#9370DB] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-white">
-              Purchasing Behaviour
-            </th>
-            <th colSpan={3} className="bg-[#D4A574] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              Opportunity & Project Status
-            </th>
-            <th colSpan={1} className="bg-[#87CEEB] border border-gray-300 px-3 py-2 text-center text-sm font-semibold text-black">
-              CMI Insights
-            </th>
-          </tr>
-          <tr className="bg-gray-100">
-            {/* Customer Information */}
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[60px]">S.No.</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[180px]">Customer / Plant / Organization Name</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">Parent Group / Holding Company</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[100px]">Country</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">City / Industrial Cluster</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">End-use Industry</th>
-            <th className="bg-[#FFF8DC] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[130px]">Facility Type</th>
-            {/* Contact Details */}
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[130px]">Key Contact Person</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">Designation / Department</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">Email Address</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[140px]">Phone/ WhatsApp Number</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[150px]">LinkedIn Profile</th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black whitespace-nowrap min-w-[130px]">Website URL</th>
-            {/* Needs & Pain Points */}
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[150px]">
-              <div>Primary Need Focus</div>
-              <div className="font-normal text-[10px] text-gray-600">(Products / Services / Both)</div>
-            </th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[200px]">
-              <div>Key Product Needs</div>
-              <div className="font-normal text-[10px] text-gray-600">(doors, automation, safety, insulation, seals, etc.)</div>
-            </th>
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[220px]">
-              <div>Key Service Needs</div>
-              <div className="font-normal text-[10px] text-gray-600">(installation, maintenance, AMC, repair, retrofit, etc.)</div>
-            </th>
-            {/* Purchasing Behaviour */}
-            <th className="bg-[#DDA0DD] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[200px]">
-              <div>Decision Makers</div>
-              <div className="font-normal text-[10px] text-gray-600">(facility manager, maintenance head, procurement, etc.)</div>
-            </th>
-            <th className="bg-[#DDA0DD] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[200px]">
-              <div>Current Supplier Setup</div>
-              <div className="font-normal text-[10px] text-gray-600">(OEM / dealers / EPC / multi-vendor / in-house)</div>
-            </th>
-            <th className="bg-[#DDA0DD] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[200px]">
-              <div>Current Maintenance Model</div>
-              <div className="font-normal text-[10px] text-gray-600">(in-house / outsourced / mixed)</div>
-            </th>
-            {/* Opportunity & Project Status */}
-            <th className="bg-[#DEB887] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[180px]">
-              <div>Priority Level for Door Upgrade / Service</div>
-              <div className="font-normal text-[10px] text-gray-600">(Low / Medium / High)</div>
-            </th>
-            <th className="bg-[#DEB887] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[180px]">
-              <div>Expected Opportunity Size</div>
-              <div className="font-normal text-[10px] text-gray-600">(small / medium / large; or spend range)</div>
-            </th>
-            <th className="bg-[#DEB887] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[220px]">
-              <div>Planned Projects / Triggers</div>
-              <div className="font-normal text-[10px] text-gray-600">(expansion, retrofit, compliance, automation)</div>
-            </th>
-            {/* CMI Insights */}
-            <th className="bg-[#B0E0E6] border border-gray-300 px-3 py-2 text-left text-xs font-semibold text-black min-w-[200px]">
-              <div>Customer Benchmarking Summary</div>
-              <div className="font-normal text-[10px] text-gray-600">(Potential Customers / Peer Group)</div>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          {sampleCustomerData.map((customer, index) => (
-            <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-              {/* Customer Information */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black text-center">{customer.sNo}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.customerPlantOrganizationName}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.parentGroupHoldingCompany}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.country}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.cityIndustrialCluster}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.endUseIndustry}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.facilityType}</td>
-              {/* Contact Details */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.keyContactPerson}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.designation}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`mailto:${customer.emailAddress}`}>{customer.emailAddress}</a>
-              </td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.phoneNumber}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`https://${customer.linkedInProfile}`} target="_blank" rel="noopener noreferrer">{customer.linkedInProfile}</a>
-              </td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-blue-600 hover:underline">
-                <a href={`https://${customer.websiteUrl}`} target="_blank" rel="noopener noreferrer">{customer.websiteUrl}</a>
-              </td>
-              {/* Needs & Pain Points */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.primaryNeedFocus}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.keyProductNeeds}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.keyServiceNeeds}</td>
-              {/* Purchasing Behaviour */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.decisionMakers}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.currentSupplierSetup}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.currentMaintenanceModel}</td>
-              {/* Opportunity & Project Status */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.priorityLevel}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.expectedOpportunitySize}</td>
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.plannedProjects}</td>
-              {/* CMI Insights */}
-              <td className="border border-gray-300 px-3 py-2 text-sm text-black">{customer.customerBenchmarkingSummary}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )
+export default function CustomerIntelligenceDatabase({ title, height = 600 }: CustomerIntelligenceDatabaseProps) {
+  const [selectedRow, setSelectedRow] = useState<number | null>(null)
+  const customers = DEMO_DATA
 
   return (
     <div className="w-full">
-      <h2 className="text-xl font-bold text-black mb-6">Customer Intelligence Database</h2>
+      {/* Title */}
+      <div className="mb-4">
+        <h3 className="text-base font-semibold text-black">
+          {title || 'Customer Intelligence Database'}
+        </h3>
+      </div>
 
-      <Preposition
-        title="Proposition 1 - Basic"
-        isOpen={openPreposition === 1}
-        onToggle={() => togglePreposition(1)}
+      {/* Table */}
+      <div
+        className="overflow-auto bg-white rounded-lg border border-gray-200"
+        style={{ maxHeight: height }}
       >
-        {renderPreposition1Table()}
-      </Preposition>
+        <table className="min-w-full border-collapse">
+          <thead className="sticky top-0 z-20">
+            {/* Section Headers Row */}
+            <tr>
+              {SECTIONS.map((section) => (
+                <th
+                  key={section.name}
+                  colSpan={section.columns.length}
+                  className={`border border-gray-300 text-center text-xs font-bold py-2 px-2 text-black ${section.bgColor}`}
+                >
+                  <span className="text-black">{section.name}</span>
+                </th>
+              ))}
+            </tr>
 
-      <Preposition
-        title="Proposition 2 - Advanced"
-        isOpen={openPreposition === 2}
-        onToggle={() => togglePreposition(2)}
-      >
-        {renderPreposition2Table()}
-      </Preposition>
+            {/* Column Headers Row */}
+            <tr>
+              {SECTIONS.map((section) =>
+                section.columns.map((col) => (
+                  <th
+                    key={col.key}
+                    className={`border border-gray-300 px-2 py-2 text-[11px] font-bold text-black text-left align-top ${section.headerBg}`}
+                    style={{ minWidth: col.key === 'company_name' ? 120 : 100 }}
+                  >
+                    <div className="whitespace-normal leading-tight">{col.label}</div>
+                  </th>
+                ))
+              )}
+            </tr>
+          </thead>
 
-      <Preposition
-        title="Proposition 3 - Premium"
-        isOpen={openPreposition === 3}
-        onToggle={() => togglePreposition(3)}
-      >
-        {renderPreposition3Table()}
-      </Preposition>
+          <tbody>
+            {customers.map((cust, rowIndex) => (
+              <tr
+                key={rowIndex}
+                onClick={() => setSelectedRow(selectedRow === rowIndex ? null : rowIndex)}
+                className={`cursor-pointer transition-colors ${
+                  selectedRow === rowIndex
+                    ? 'bg-blue-50'
+                    : 'hover:bg-gray-50'
+                }`}
+              >
+                {SECTIONS.map((section) =>
+                  section.columns.map((col) => (
+                    <td
+                      key={col.key}
+                      className="border border-gray-200 px-2 py-2 text-xs text-black"
+                    >
+                      {col.key === 'company_name' ? (
+                        <span className="font-medium">{cust[col.key]}</span>
+                      ) : (
+                        cust[col.key]
+                      )}
+                    </td>
+                  ))
+                )}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Footer Info */}
+      <div className="mt-3 text-center text-xs text-gray-500">
+        Click on any row to highlight customer details
+      </div>
     </div>
   )
 }

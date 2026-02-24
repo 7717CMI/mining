@@ -1,58 +1,120 @@
 {
   "Global": {
-    "By Technology": {
-      "Single-Phase Micro Inverters": {},
-      "Three-Phase Micro Inverters": {}
+    "By Product Type": {
+      "Adsorbents & Purification Media": {
+        "Activated Carbon (PAC / GAC)": {},
+        "Activated Alumina": {},
+        "Ion Exchange Resins": {}
+      },
+      "Alkalis & pH Control Bases": {
+        "Caustic Soda Flakes": {},
+        "Caustic Soda Pearls": {},
+        "Caustic Soda Lye (Liquid NaOH)": {},
+        "Soda Ash (Na2CO3)": {}
+      },
+      "Process & Leaching Acids": {
+        "Sulphuric Acid": {},
+        "Nitric Acid": {},
+        "Hydrochloric Acid (HCl)": {},
+        "Phosphoric Acid": {}
+      },
+      "Oxidants & Redox Process Agents": {
+        "Hydrogen Peroxide": {},
+        "Sodium Hypochlorite": {},
+        "Sodium Metabisulfite (SMBS)": {}
+      },
+      "Coagulants, Flocculants & Clarifiers": {
+        "PAX (Polyaluminium Chloride / PAC-grade coagulant)": {},
+        "Ferric Chloride": {},
+        "Polyacrylamide (PAM) Flocculants": {}
+      },
+      "Flotation & Mineral Separation Reagents": {
+        "MIBC (frother)": {},
+        "Xanthates (SIPX / SIBX)": {},
+        "Dithiophosphates": {}
+      },
+      "Industrial Solvents & Plant Cleaning Solvents": {
+        "Ethyl Acetate": {},
+        "Isopropyl Alcohol (IPA)": {},
+        "Methanol": {},
+        "Acetone": {}
+      }
     },
-    "By Power Rating": {
-      "<250 W": {},
-      "250 W - 500 W": {},
-      ">500 W": {}
+    "By Grade": {
+      "Technical / Industrial grade": {},
+      "Water-treatment grade": {},
+      "Food / Pharma grade (where applicable for solvents)": {},
+      "Others": {}
     },
-    "By Provider": {
-      "Direct Sales through OEM": {},
-      "Distributors and Wholesalers": {},
-      "Retailers": {},
-      "Solar Installers and Contractors": {}
+    "By Application": {
+      "Mineral Processing (Beneficiation & Flotation)": {
+        "Frothing": {},
+        "Collecting": {},
+        "Activating / depressing / modifying": {}
+      },
+      "Hydrometallurgy (Leaching & Metal Recovery)": {
+        "Acid leaching": {},
+        "Oxidation / reduction conditioning": {},
+        "Solution purification / polishing": {}
+      },
+      "Process Water, Effluent & Tailings Water Treatment": {
+        "Coagulation": {},
+        "Flocculation": {},
+        "Clarification / thickening support": {},
+        "Adsorption polishing": {}
+      },
+      "Industrial Manufacturing & Utilities": {
+        "pH control / neutralization": {},
+        "Process chemical consumption (plant operations)": {}
+      },
+      "Maintenance, Cleaning & Degreasing": {
+        "Equipment cleaning / degreasing": {},
+        "Solvent-based plant maintenance": {}
+      }
     },
-    "By End-User": {
-      "Residential": {},
-      "Commercial and Industrial": {},
-      "Utility-scale": {}
+    "By End-Use Industry": {
+      "Mining & Mineral Processing": {},
+      "Water & Wastewater Treatment": {
+        "Municipal": {},
+        "Industrial": {}
+      },
+      "Chemicals & Process Industries": {},
+      "Energy & Utilities": {},
+      "Fertilizers / Phosphate Value Chain": {},
+      "General Manufacturing (multi-industry)": {}
+    },
+    "By Customer Type": {
+      "Direct End-Users": {
+        "Mines / Beneficiation Plants": {},
+        "Industrial Plants / Factories": {},
+        "Utilities / Treatment Plants": {}
+      },
+      "EPC / O&M Contractors": {
+        "Water Treatment EPCs": {},
+        "Plant O&M contractors": {}
+      },
+      "Government / Tender Buyers": {
+        "Municipal / utility tenders": {},
+        "Institutional procurement": {}
+      }
+    },
+    "By Distribution Channel": {
+      "Direct": {},
+      "Indirect (Via. Distributors)": {}
     },
     "By Region": {
-      "North America": {
-        "U.S.": {},
-        "Canada": {}
-      },
-      "Europe": {
-        "U.K.": {},
-        "Germany": {},
-        "Italy": {},
-        "France": {},
-        "Spain": {},
-        "Russia": {},
-        "Rest of Europe": {}
-      },
-      "Asia Pacific": {
-        "China": {},
-        "India": {},
-        "Japan": {},
-        "South Korea": {},
-        "ASEAN": {},
-        "Australia": {},
-        "Rest of Asia Pacific": {}
-      },
-      "Latin America": {
-        "Brazil": {},
-        "Argentina": {},
-        "Mexico": {},
-        "Rest of Latin America": {}
-      },
-      "Middle East & Africa": {
-        "GCC": {},
-        "South Africa": {},
-        "Rest of Middle East & Africa": {}
+      "Morocco": {},
+      "West Africa": {
+        "Guinea": {},
+        "Ghana": {},
+        "Benin": {},
+        "Ivory Coast (Côte d'Ivoire)": {},
+        "Mauritania": {},
+        "Senegal": {},
+        "Nigeria": {},
+        "Niger": {},
+        "Togo": {},
+        "Burkina Faso": {}
       }
     }
   }
