@@ -1455,7 +1455,7 @@ export async function processJsonDataAsync(
     
     // Build metadata
     const metadata: Metadata = {
-      market_name: 'West Africa Mining and Industrial Chemical',
+      market_name: 'Russia Morocco West Africa Mining and Industrial Chemical',
       market_type: 'Market Analysis',
       industry: 'Energy & Power',
       years: allYears,
